@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvyxq1po3xpsw"]
+
+[ext_resource type="Script" uid="uid://bahwfkmo67p5r" path="res://shop_ui.gd" id="1_fscwk"]
+[ext_resource type="Texture2D" uid="uid://o147rq45nm0b" path="res://resource/stickynote.png" id="2_l4r40"]
+[ext_resource type="LabelSettings" uid="uid://yur1kbpcwdss" path="res://shop_ui.tres" id="3_du886"]
+[ext_resource type="PackedScene" uid="uid://cu5gcejqpwrol" path="res://sticky_note_button.tscn" id="4_du886"]
+[ext_resource type="LabelSettings" uid="uid://di5qj3gekqni3" path="res://red.tres" id="5_qvybl"]
+
+[node name="ShopUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fscwk")
+sticky_note_scene = ExtResource("4_du886")
+
+[node name="TextSticky" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -360.0
+offset_right = 360.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(360, 360)
+texture = ExtResource("2_l4r40")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+process_mode = 4
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shop" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Wave 1"
+label_settings = ExtResource("3_du886")
+horizontal_alignment = 1
+
+[node name="MoneyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Current Money = 1000"
+label_settings = ExtResource("5_qvybl")
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(270, 270)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 3
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1143.0
+offset_top = 635.0
+offset_right = 1188.0
+offset_bottom = 666.0
+text = "Next"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

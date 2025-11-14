@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://yur1kbpcwdss"]
+
+[ext_resource type="FontFile" uid="uid://bn3hpx7ev6vsl" path="res://resource/handwriting.ttf" id="1_f5wvu"]
+
+[resource]
+font = ExtResource("1_f5wvu")
+font_size = 64
+font_color = Color(5.19812e-06, 0, 0.931491, 1)

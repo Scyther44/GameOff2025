@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://dl77eoc1wt8bg"]
+
+[ext_resource type="Texture2D" uid="uid://cimu0aivtdnw2" path="res://resource/hand.png" id="1_2gi1b"]
+[ext_resource type="Script" uid="uid://cfhabybevlyp8" path="res://transition.gd" id="1_pj2mc"]
+
+[sub_resource type="Curve2D" id="Curve2D_pj2mc"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 238, 147, 0, 0, 0, 0, 53, 132, 0, 0, 0, 0, 268, 227, 0, 0, 0, 0, 77, 257, 0, 0, 0, 0, 325, 280, 0, 0, 0, 0, 78, 356, 0, 0, 0, 0, 383, 315, 0, 0, 0, 0, 145, 501, 0, 0, 0, 0, 56, 469, 0, 0, 0, 0, 53, 566, 0, 0, 0, 0, 276, 542, 0, 0, 0, 0, 385, 468, 0, 0, 0, 0, 399, 576, 0, 0, 0, 0, 182, 655, 0, 0, 0, 0, 362, 702, 0, 0, 0, 0, 538, 662, 0, 0, 0, 0, 649, 592, 0, 0, 0, 0, 528, 510, 0, 0, 0, 0, 715, 501, 0, 0, 0, 0, 686, 659, 0, 0, 0, 0, 855, 492, 0, 0, 0, 0, 832, 678, 0, 0, 0, 0, 1065, 478, 0, 0, 0, 0, 1249, 674, 0, 0, 0, 0, 1233, 501)
+}
+point_count = 26
+
+[sub_resource type="Animation" id="Animation_pj2mc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D/Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(426.825, 152.418)]
+}
+
+[sub_resource type="Animation" id="Animation_2gi1b"]
+resource_name = "new_animation"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D/Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.533333, 0.7, 0.9, 1.16667, 1.46667, 1.7, 1.96667, 2.16667, 2.36667, 2.54333, 2.73333, 2.93333, 3.16667, 3.32333, 3.56667, 3.71, 3.86667, 4, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(387.178, 189.836), Vector2(426.825, 152.418), Vector2(605.583, 141.917), Vector2(468.479, 270.087), Vector2(754.398, 164.012), Vector2(645.771, 439.145), Vector2(551.732, 461.967), Vector2(619.921, 536.211), Vector2(791.332, 395.079), Vector2(838.727, 292.933), Vector2(770.162, 549.198), Vector2(933.14, 499.076), Vector2(1129.15, 256.949), Vector2(981.26, 240.159), Vector2(1118.89, 152.802), Vector2(1194.44, 278.92), Vector2(1244.53, 66.9713), Vector2(1331.11, 210.956), Vector2(1423.5, -60.0228), Vector2(1670.78, 3.5117), Vector2(1577.54, -124.608)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pj2mc"]
+_data = {
+&"RESET": SubResource("Animation_pj2mc"),
+&"new_animation": SubResource("Animation_2gi1b")
+}
+
+[node name="Transition" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pj2mc")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_pj2mc")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(127.347, 138.028)
+rotation = 0.553294
+progress = 390.75
+rotates = false
+
+[node name="Hand" type="Sprite2D" parent="Path2D/PathFollow2D"]
+position = Vector2(426.825, 152.418)
+rotation = -0.142116
+scale = Vector2(1.80277, 1)
+texture = ExtResource("1_2gi1b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pj2mc")
+}

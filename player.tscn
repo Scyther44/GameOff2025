@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2j64sxhtbr0o"]
+
+[ext_resource type="Script" uid="uid://cf4q1y7wilrvq" path="res://player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://2cknpo4vodxu" path="res://resource/playerbotblue.png" id="2_i3pqv"]
+[ext_resource type="Texture2D" uid="uid://c1woahmmku4ua" path="res://resource/playertopbow.png" id="3_hqtel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sh265"]
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_onrkg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 4)
+shape = SubResource("RectangleShape2D_sh265")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-1, 5)
+texture = ExtResource("2_i3pqv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-3, -23)
+texture = ExtResource("3_hqtel")
+
+[node name="Marker2D" type="Marker2D" parent="Sprite2D" groups=["player"]]
+position = Vector2(57.0935, 12)
+
+[node name="FiringTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="FiringTimer" to="." method="_on_firing_timer_timeout"]

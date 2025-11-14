@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm2n1fynsyp0t"]
+
+[ext_resource type="Script" uid="uid://bgrx3tyrtsnjr" path="res://weapon_slot.gd" id="1_twi78"]
+[ext_resource type="Texture2D" uid="uid://cbm1axv5gwcse" path="res://resource/bowicon.png" id="1_x8jt7"]
+[ext_resource type="Texture2D" uid="uid://cc7bnsu7qeba2" path="res://resource/highlightframel.png" id="2_twi78"]
+
+[node name="WeaponSlot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_twi78")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -180.0
+offset_bottom = 180.0
+texture = ExtResource("1_x8jt7")
+
+[node name="HighlightFrame" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -180.0
+offset_bottom = 180.0
+texture = ExtResource("2_twi78")
