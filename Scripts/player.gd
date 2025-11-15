@@ -20,9 +20,12 @@ signal weapon_changed
 signal weapon_bought
 enum Weapons {BOW, RIFLE, CANNON}
 var equipped_weapon = Weapons.BOW
-
+var top_sprite = Sprite2D
+var top_sprite_bow_image = preload("res://Assets/playertopbownew.png")
+var top_sprite_rifle_image = preload("res://Assets/playertoprifle.png")
 func _ready() -> void:
 	shoot_timer.wait_time = bow_fire_rate
+	top_sprite = $Sprite2D
 	#shoot_timer.connect("timeout", self._on_shoot_timer_timeout)
 	
 func _process(_delta: float) -> void:
@@ -70,11 +73,13 @@ func _input(event: InputEvent) -> void:
 			shoot_timer.wait_time = rifle_fire_rate
 			bullet_scene = preload("res://Scenes/bullet.tscn")
 			equipped_weapon = Weapons.RIFLE
+			top_sprite.texture = top_sprite_rifle_image
 	elif event.is_action("weaponkey1"):
 		emit_signal("weapon_changed", 0)
 		shoot_timer.wait_time = bow_fire_rate
 		bullet_scene = preload("res://Scenes/arrow.tscn")
 		equipped_weapon = Weapons.BOW
+		top_sprite.texture = top_sprite_bow_image
 func shoot():
 	var b = bullet_scene.instantiate()
 	owner.add_child(b)
