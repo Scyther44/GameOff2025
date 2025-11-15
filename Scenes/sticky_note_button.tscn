@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://cu5gcejqpwrol"]
+
+[ext_resource type="Script" uid="uid://kanikfdlyg36" path="res://Scripts/sticky_note_button.gd" id="1_0uap1"]
+[ext_resource type="Texture2D" uid="uid://cj800rwrkm6w0" path="res://Assets/stickynoteblank.png" id="1_jy45a"]
+[ext_resource type="LabelSettings" uid="uid://d4efkdpevsasd" path="res://Resources/stickynote.tres" id="3_01uh2"]
+
+[node name="StickyNoteButton" type="Button"]
+custom_minimum_size = Vector2(270, 270)
+anchors_preset = -1
+anchor_right = 0.211
+anchor_bottom = 0.375
+offset_right = -1.07999
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0uap1")
+
+[node name="BlankSticky" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(270, 270)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+pivot_offset = Vector2(180, 180)
+texture = ExtResource("1_jy45a")
+
+[node name="ItemName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -135.0
+offset_right = 135.0
+offset_bottom = 68.0
+grow_horizontal = 2
+text = "Name"
+label_settings = ExtResource("3_01uh2")
+horizontal_alignment = 1
+
+[node name="Price" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -134.0
+offset_top = -73.0
+offset_right = 135.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Price"
+label_settings = ExtResource("3_01uh2")
+horizontal_alignment = 1

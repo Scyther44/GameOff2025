@@ -1,10 +1,10 @@
-2D shooter set
+2D shooter
 
-Player on left with gun shoots waves of enemis from the right
-player use mouse to aim and shoot. Player is stationary. Player has a hp bar
+Player on left with gun shoots waves of enemies from the right
+player uses mouse to aim and shoot. Player is stationary. Player has a health bar
 In between waves there is a buy phase that the player can use to buy and upgrade weapons and defenses 
 
 Optional:
-	Days survived
-	Score
-	Enemy kill counts 
+	Waves survived
+	Money earned
+	Enemies killed
