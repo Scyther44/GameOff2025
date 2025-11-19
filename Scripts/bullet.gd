@@ -1,6 +1,6 @@
 class_name Bullet extends Area2D
 
-@export var speed: float = 600.0
+@export var speed: float = 750.0
 @export var damage: int = 10
 
 var is_headshot = false

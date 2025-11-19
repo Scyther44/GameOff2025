@@ -10,8 +10,17 @@ signal upgrade_purchased
 signal money_changed
 var rifle_purchased = false
 var cannon_purchased = false
+var rifle_fire_rate_purchased_count = 0
+var bow_fire_rate_purchased_count = 0
+var cannon_fire_rate_purchased_count = 0
+var bow_damage_purchased_count = 0
+var bow_multishot_purchased_count = 0
+var rifle_damage_purchased_count = 0
+var cannon_damage_purchased_count = 0
+var cannon_punchthrough_purchased_count = 0
+
 var shop_items = [
-	{"name": "Bow Multishot", "price": 200, "id": "bow_multishot"},
+	#{"name": "Bow Multishot", "price": 200, "id": "bow_multishot"},
 	{"name": "Bow Fire Rate", "price": 10, "id": "bow_fire_rate"},
 	{"name": "Bow Damage", "price": 50, "id": "bow_damage"},
 	{"name": "Buy Rifle", "price": 10, "id": "buy_rifle"},
@@ -27,7 +36,6 @@ var all_shop_items = [
 	{"name": "Bow Fire Rate", "price": 10, "id": "bow_fire_rate"},
 	{"name": "Bow Damage", "price": 30, "id": "bow_damage"},
 	{"name": "Buy Rifle", "price": 10, "id": "buy_rifle"},
-	{"name": "Rifle Multishot", "price": 25, "id": "rifle_multishot"},
 	{"name": "Rifle Fire Rate", "price": 40, "id": "rifle_fire_rate"},
 	{"name": "Rifle Damage", "price": 50, "id": "rifle_damage"},
 	{"name": "Buy Cannon", "price": 200, "id": "buy_cannon"},
@@ -85,31 +93,25 @@ func populate_shop_items(items: Array) -> void:
 func update_grid():
 	if shop_items.size() > SHOP_LIMIT:
 		print("too many shop items")
-	var items = []
-	match night_num:
-		0:
-			items = [
-				all_shop_items[0], # Bow Multishot
-				all_shop_items[1], # Bow Fire Rate
-				all_shop_items[2], # Bow Damage
-				all_shop_items[3], # Buy Rifle
+		
+	var items = [
+		all_shop_items[0], # Bow Multishot
+		all_shop_items[1], # Bow Fire Rate
+		all_shop_items[2], # Bow Damage
+		all_shop_items[3], # Buy Rifle
+		]
+		
+	if rifle_purchased:
+		items = [
+			all_shop_items[0],
+			all_shop_items[1], 
+			all_shop_items[2], 
+			all_shop_items[3], 
+			all_shop_items[4], 
+			all_shop_items[5], 
 			]
-		1:
-			items = [
-				all_shop_items[0], # Bow Multishot
-				all_shop_items[1], # Bow Fire Rate
-				all_shop_items[2], # Bow Damage
-				all_shop_items[3], # Buy Rifle
-			]
-		2:
-			items = [
-				all_shop_items[5],
-				all_shop_items[6],
-				all_shop_items[7],
-			]
-		_:
-			# fallback for later waves 
-			items = all_shop_items.slice(0, min(SHOP_LIMIT, all_shop_items.size()))
+	#if cannon_purchased:
+		#items = all_shop_items.slice(0, min(SHOP_LIMIT, all_shop_items.size()))
 	populate_shop_items(items)
 
 func _on_item_purchased(upgrade_id: String, cost: int):
@@ -120,10 +122,27 @@ func _on_item_purchased(upgrade_id: String, cost: int):
 		emit_signal("upgrade_purchased", upgrade_id)
 		if (upgrade_id == "buy_rifle"):
 			rifle_purchased = true
+			remove_item_by_id("buy_rifle")
 		elif (upgrade_id == "buy_cannon"):
 			cannon_purchased = true
+			remove_item_by_id("buy_cannon")
+		elif(upgrade_id == "bow_multishot"):
+			bow_multishot_purchased_count += 1
+			if bow_multishot_purchased_count >= 2:
+				remove_item_by_id("bow_multishot")
 	else:
 		print("Not enough money!")
+
+func remove_item_by_id(target_id):
+	for item in all_shop_items:
+		if item.id == target_id:
+			all_shop_items.erase(item)
+			break
+			
+func get_item_by_id(target_id):
+	for item in all_shop_items:
+		if item.id == target_id:
+			return item
 
 func update_money():
 	money_label.text = "Money: $" + str(player_money)

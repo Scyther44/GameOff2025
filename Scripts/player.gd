@@ -16,6 +16,11 @@ var cannon_fire_rate = 1
 var bouncing_betty_fire_rate = 1
 var rifle_unlocked = false
 var cannon_unlocked = false
+var has_bow_multishot_1 = true
+var has_bow_multishot_2 = true
+var has_rifle_multishot = false
+var has_cannon_multishot = false
+var has_betty_multishot = false
 signal weapon_changed
 signal weapon_bought
 enum Weapons {BOW, RIFLE, CANNON}
@@ -84,12 +89,13 @@ func shoot():
 	var b = bullet_scene.instantiate()
 	owner.add_child(b)
 	bullet_references.push_back(b)
+		
 	#b.transform = $Sprite2D/Marker2D.global_transform
 	var spawn_pos: Vector2 = $Sprite2D/Marker2D.global_position
 	var aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation)
 	# Set bullet position
 	b.global_position = spawn_pos
-
+			
 	# Check if bullet has "velocity" property (e.g. arrow)
 	if "velocity" in b:
 		b.rotation = aim_dir.angle()
@@ -97,6 +103,43 @@ func shoot():
 	else:
 		# For normal bullets, just use transform orientation
 		b.transform = $Sprite2D/Marker2D.global_transform
+		
+	if(has_bow_multishot_1 and equipped_weapon == Weapons.BOW):
+		var second_b = bullet_scene.instantiate()
+		owner.add_child(second_b)
+		bullet_references.push_back(second_b)
+		#b.transform = $Sprite2D/Marker2D.global_transform
+		var second_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(25)
+		print("aim_dir = " + str(second_aim_dir))
+		# Set bullet position
+		second_b.global_position = spawn_pos
+			
+		# Check if bullet has "velocity" property (e.g. arrow)
+		if "velocity" in second_b:
+			second_b.rotation = second_aim_dir.angle()
+			second_b.velocity = second_aim_dir * second_b.speed / 2
+		#else:
+			# For normal bullets, just use transform orientation
+			#second_b.transform = $Sprite2D/Marker2D.global_transform
+			
+	if(has_bow_multishot_2 and equipped_weapon == Weapons.BOW):
+		var third_b = bullet_scene.instantiate()
+		owner.add_child(third_b)
+		bullet_references.push_back(third_b)
+		#b.transform = $Sprite2D/Marker2D.global_transform
+		var third_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(-45)
+		print("aim_dir = " + str(third_aim_dir))
+		# Set bullet position
+		third_b.global_position = spawn_pos
+			
+		# Check if bullet has "velocity" property (e.g. arrow)
+		if "velocity" in third_b:
+			third_b.rotation = third_aim_dir.angle()
+			third_b.velocity = third_aim_dir * third_b.speed / 2
+		else:
+			# For normal bullets, just use transform orientation
+			third_b.transform = $Sprite2D/Marker2D.global_transform
+			
 func _on_firing_timer_timeout() -> void:
 	# Reset shooting ability after the timer finishes
 	can_shoot = true

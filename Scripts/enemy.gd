@@ -8,10 +8,14 @@ signal enemy_died
 var health: int
 var is_knocked_back: bool = false
 var headshot_multiplier = 2
+var death_count = 0
 func _ready():
 	health = max_health
 
 func _physics_process(delta: float) -> void:
+	if health <= 0 and death_count < 1:
+		death_count += 1
+		die()
 	if is_knocked_back:
 		# Apply friction to knockback velocity
 		velocity = velocity.move_toward(Vector2.ZERO, 500 * delta)
@@ -43,9 +47,6 @@ func take_damage(amount: int, knockback_dir: Vector2, is_headshot: bool) -> void
 	modulate = Color(0.5, 0.5, 1)
 	await get_tree().create_timer(0.1).timeout
 	modulate = Color(1, 1, 1)
-
-	if health <= 0:
-		die()
 
 func die() -> void:
 	emit_signal("enemy_died")
