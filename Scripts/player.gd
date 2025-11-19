@@ -16,11 +16,15 @@ var cannon_fire_rate = 1
 var bouncing_betty_fire_rate = 1
 var rifle_unlocked = false
 var cannon_unlocked = false
-var has_bow_multishot_1 = true
-var has_bow_multishot_2 = true
+var has_bow_multishot_1 = false
+var has_bow_multishot_2 = false
+var multishot_count = 0
 var has_rifle_multishot = false
 var has_cannon_multishot = false
 var has_betty_multishot = false
+var arrow_damage = 10
+var bullet_damage = 25
+var cannon_ball_damage = 100
 signal weapon_changed
 signal weapon_bought
 enum Weapons {BOW, RIFLE, CANNON}
@@ -85,60 +89,83 @@ func _input(event: InputEvent) -> void:
 		bullet_scene = preload("res://Scenes/arrow.tscn")
 		equipped_weapon = Weapons.BOW
 		top_sprite.texture = top_sprite_bow_image
+		
 func shoot():
-	var b = bullet_scene.instantiate()
-	owner.add_child(b)
-	bullet_references.push_back(b)
-		
-	#b.transform = $Sprite2D/Marker2D.global_transform
-	var spawn_pos: Vector2 = $Sprite2D/Marker2D.global_position
-	var aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation)
-	# Set bullet position
-	b.global_position = spawn_pos
+	match equipped_weapon:
+		Weapons.BOW:
+			var b = bullet_scene.instantiate()
+			b.damage = arrow_damage
+			owner.add_child(b)
+			bullet_references.push_back(b)
+				
+			#b.transform = $Sprite2D/Marker2D.global_transform
+			var spawn_pos: Vector2 = $Sprite2D/Marker2D.global_position
+			var aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation)
+			# Set bullet position
+			b.global_position = spawn_pos
+					
+			# Check if bullet has "velocity" property (e.g. arrow)
+			if "velocity" in b:
+				b.rotation = aim_dir.angle()
+				b.velocity = aim_dir * b.speed
+								
+			if(has_bow_multishot_1):
+				var second_b = bullet_scene.instantiate()
+				second_b.damage = arrow_damage
+				owner.add_child(second_b)
+				bullet_references.push_back(second_b)
+				#b.transform = $Sprite2D/Marker2D.global_transform
+				var second_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(25)
+				print("aim_dir = " + str(second_aim_dir))
+				# Set bullet position
+				second_b.global_position = spawn_pos
+					
+				# Check if bullet has "velocity" property (e.g. arrow)
+				if "velocity" in second_b:
+					second_b.rotation = second_aim_dir.angle()
+					second_b.velocity = second_aim_dir * second_b.speed / 2
+					
+			if(has_bow_multishot_2):
+				var third_b = bullet_scene.instantiate()
+				third_b.damage = arrow_damage
+				owner.add_child(third_b)
+				bullet_references.push_back(third_b)
+				#b.transform = $Sprite2D/Marker2D.global_transform
+				var third_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(-45)
+				print("aim_dir = " + str(third_aim_dir))
+				# Set bullet position
+				third_b.global_position = spawn_pos
+					
+				# Check if bullet has "velocity" property (e.g. arrow)
+				if "velocity" in third_b:
+					third_b.rotation = third_aim_dir.angle()
+					third_b.velocity = third_aim_dir * third_b.speed / 2
+					
+		Weapons.RIFLE:
+			var b = bullet_scene.instantiate()
+			b.damage = bullet_damage
+			owner.add_child(b)
+			bullet_references.push_back(b)
+				
+			#b.transform = $Sprite2D/Marker2D.global_transform
+			var spawn_pos: Vector2 = $Sprite2D/Marker2D.global_position
+			var aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation)
+			# Set bullet position
+			b.global_position = spawn_pos
+			b.transform = $Sprite2D/Marker2D.global_transform
 			
-	# Check if bullet has "velocity" property (e.g. arrow)
-	if "velocity" in b:
-		b.rotation = aim_dir.angle()
-		b.velocity = aim_dir * b.speed
-	else:
-		# For normal bullets, just use transform orientation
-		b.transform = $Sprite2D/Marker2D.global_transform
-		
-	if(has_bow_multishot_1 and equipped_weapon == Weapons.BOW):
-		var second_b = bullet_scene.instantiate()
-		owner.add_child(second_b)
-		bullet_references.push_back(second_b)
-		#b.transform = $Sprite2D/Marker2D.global_transform
-		var second_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(25)
-		print("aim_dir = " + str(second_aim_dir))
-		# Set bullet position
-		second_b.global_position = spawn_pos
-			
-		# Check if bullet has "velocity" property (e.g. arrow)
-		if "velocity" in second_b:
-			second_b.rotation = second_aim_dir.angle()
-			second_b.velocity = second_aim_dir * second_b.speed / 2
-		#else:
-			# For normal bullets, just use transform orientation
-			#second_b.transform = $Sprite2D/Marker2D.global_transform
-			
-	if(has_bow_multishot_2 and equipped_weapon == Weapons.BOW):
-		var third_b = bullet_scene.instantiate()
-		owner.add_child(third_b)
-		bullet_references.push_back(third_b)
-		#b.transform = $Sprite2D/Marker2D.global_transform
-		var third_aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation) + Vector2.from_angle(-45)
-		print("aim_dir = " + str(third_aim_dir))
-		# Set bullet position
-		third_b.global_position = spawn_pos
-			
-		# Check if bullet has "velocity" property (e.g. arrow)
-		if "velocity" in third_b:
-			third_b.rotation = third_aim_dir.angle()
-			third_b.velocity = third_aim_dir * third_b.speed / 2
-		else:
-			# For normal bullets, just use transform orientation
-			third_b.transform = $Sprite2D/Marker2D.global_transform
+		Weapons.CANNON:
+			var b = bullet_scene.instantiate()
+			b.damage = cannon_ball_damage
+			owner.add_child(b)
+			bullet_references.push_back(b)
+				
+			#b.transform = $Sprite2D/Marker2D.global_transform
+			var spawn_pos: Vector2 = $Sprite2D/Marker2D.global_position
+			var aim_dir: Vector2 = Vector2.RIGHT.rotated($Sprite2D.rotation)
+			# Set bullet position
+			b.global_position = spawn_pos
+			b.transform = $Sprite2D/Marker2D.global_transform
 			
 func _on_firing_timer_timeout() -> void:
 	# Reset shooting ability after the timer finishes
@@ -174,4 +201,19 @@ func _on_shop_ui_upgrade_purchased(upgrade_id: String) -> void:
 		print("current rifle fire rate:" + str(rifle_fire_rate))
 		if equipped_weapon == Weapons.RIFLE:
 			shoot_timer.wait_time = rifle_fire_rate
+	elif (upgrade_id == "bow_multishot"):
+		if multishot_count == 0:
+			has_bow_multishot_1 = true
+			multishot_count += 1
+		else:
+			has_bow_multishot_2 = true
+	elif (upgrade_id == "bow_damage"):
+		arrow_damage += arrow_damage
+		print("arrow damage up = " + str(arrow_damage))
+	elif (upgrade_id == "rifle_damage"):
+		bullet_damage += bullet_damage
+		print("bullet damage up = " + str(bullet_damage))
+	elif (upgrade_id == "cannon_ball_damage"):
+		cannon_ball_damage += cannon_ball_damage
+		print("cannonball damage up = " + str(cannon_ball_damage))
 		

@@ -5,7 +5,6 @@ signal shop_closed
 @export var player_money := 0
 @onready var grid := $VBoxContainer/GridContainer
 @onready var money_label := $VBoxContainer/MoneyLabel
-const SHOP_LIMIT = 6
 signal upgrade_purchased
 signal money_changed
 var rifle_purchased = false
@@ -18,27 +17,15 @@ var bow_multishot_purchased_count = 0
 var rifle_damage_purchased_count = 0
 var cannon_damage_purchased_count = 0
 var cannon_punchthrough_purchased_count = 0
-
-var shop_items = [
-	#{"name": "Bow Multishot", "price": 200, "id": "bow_multishot"},
-	{"name": "Bow Fire Rate", "price": 10, "id": "bow_fire_rate"},
-	{"name": "Bow Damage", "price": 50, "id": "bow_damage"},
-	{"name": "Buy Rifle", "price": 10, "id": "buy_rifle"},
-	#{"name": "Rifle Multishot", "price": 250, "id": "reload"},
-	#{"name": "Rifle Fire Rate", "price": 400, "id": "shield"},
-	#{"name": "Rifle Damage", "price": 500, "id": "jump"},
-	#{"name": "Buy Rifle", "price": 1000, "id": "buy_rifle"},
-	#{"name": "Buy Cannon", "price": 2000, "id": "jump"},
-]
-
+var items = []
 var all_shop_items = [
-	{"name": "Bow Multishot", "price": 20, "id": "bow_multishot"},
-	{"name": "Bow Fire Rate", "price": 10, "id": "bow_fire_rate"},
-	{"name": "Bow Damage", "price": 30, "id": "bow_damage"},
-	{"name": "Buy Rifle", "price": 10, "id": "buy_rifle"},
-	{"name": "Rifle Fire Rate", "price": 40, "id": "rifle_fire_rate"},
+	{"name": "Bow Multishot", "price": 100, "id": "bow_multishot"},
+	{"name": "Bow Fire Rate", "price": 25, "id": "bow_fire_rate"},
+	{"name": "Bow Damage", "price": 50, "id": "bow_damage"},
+	{"name": "Buy Rifle", "price": 200, "id": "buy_rifle"},
+	{"name": "Rifle Fire Rate", "price": 25, "id": "rifle_fire_rate"},
 	{"name": "Rifle Damage", "price": 50, "id": "rifle_damage"},
-	{"name": "Buy Cannon", "price": 200, "id": "buy_cannon"},
+	{"name": "Buy Cannon", "price": 300, "id": "buy_cannon"},
 	{"name": "Cannon Multishot", "price": 25, "id": "cannon_multishot"},
 	{"name": "Cannon Fire Rate", "price": 40, "id": "cannon_fire_rate"},
 	{"name": "Cannon Damage", "price": 50, "id": "cannon_damage"},
@@ -47,7 +34,6 @@ var all_shop_items = [
 var presses = 0
 
 func _ready() -> void:
-	setup_grid()
 	update_money()
 
 func _process(_delta: float) -> void:
@@ -74,9 +60,6 @@ func _on_button_pressed() -> void:
 			$VBoxContainer.visible = true
 			$VBoxContainer.process_mode = Node.PROCESS_MODE_DISABLED
 			update_grid()
-			
-func setup_grid():
-	populate_shop_items(shop_items)
 		
 func populate_shop_items(items: Array) -> void:
 	for child in $VBoxContainer/GridContainer.get_children():
@@ -90,19 +73,8 @@ func populate_shop_items(items: Array) -> void:
 		grid.add_child(sticky)
 
 
-func update_grid():
-	if shop_items.size() > SHOP_LIMIT:
-		print("too many shop items")
-		
-	var items = [
-		all_shop_items[0], # Bow Multishot
-		all_shop_items[1], # Bow Fire Rate
-		all_shop_items[2], # Bow Damage
-		all_shop_items[3], # Buy Rifle
-		]
-		
-	if rifle_purchased:
-		items = [
+func update_grid():		
+	items = [
 			all_shop_items[0],
 			all_shop_items[1], 
 			all_shop_items[2], 
@@ -110,8 +82,6 @@ func update_grid():
 			all_shop_items[4], 
 			all_shop_items[5], 
 			]
-	#if cannon_purchased:
-		#items = all_shop_items.slice(0, min(SHOP_LIMIT, all_shop_items.size()))
 	populate_shop_items(items)
 
 func _on_item_purchased(upgrade_id: String, cost: int):
@@ -123,13 +93,38 @@ func _on_item_purchased(upgrade_id: String, cost: int):
 		if (upgrade_id == "buy_rifle"):
 			rifle_purchased = true
 			remove_item_by_id("buy_rifle")
+			update_grid()
 		elif (upgrade_id == "buy_cannon"):
 			cannon_purchased = true
 			remove_item_by_id("buy_cannon")
+			update_grid()
 		elif(upgrade_id == "bow_multishot"):
 			bow_multishot_purchased_count += 1
 			if bow_multishot_purchased_count >= 2:
 				remove_item_by_id("bow_multishot")
+				update_grid()
+		elif(upgrade_id == "bow_damage"):
+			bow_damage_purchased_count += 1
+			if bow_damage_purchased_count >= 2:
+				remove_item_by_id("bow_damage")
+				update_grid()
+		elif(upgrade_id == "rifle_damage"):
+			bow_damage_purchased_count += 1
+			if bow_damage_purchased_count >= 2:
+				remove_item_by_id("rifle_damage")
+				update_grid()
+		elif(upgrade_id == "bow_fire_rate"):
+			bow_fire_rate_purchased_count += 1
+			if bow_fire_rate_purchased_count >= 7:
+				remove_item_by_id("bow_fire_rate")
+				update_grid()
+				print("Max bow fire rate reached")
+		elif(upgrade_id == "rifle_fire_rate"):
+			rifle_fire_rate_purchased_count += 1
+			if rifle_fire_rate_purchased_count >= 7:
+				remove_item_by_id("rifle_fire_rate")
+				update_grid()
+				print("Max rifle fire rate reached")
 	else:
 		print("Not enough money!")
 

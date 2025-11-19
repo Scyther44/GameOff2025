@@ -74,7 +74,7 @@ func spawn_wave(wave_num: int):
 
 func _on_enemy_died():
 	active_enemies -= 1
-	gold += 10 
+	gold += 10
 	hud.update_gold(shop.player_money + gold)
 
 	if active_enemies <= 0 and current_phase == GamePhase.WAVE:

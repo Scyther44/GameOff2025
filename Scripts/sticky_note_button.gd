@@ -16,7 +16,6 @@ func _ready():
 
 func _on_pressed():
 	emit_signal("item_purchased", upgrade_id, price)
-	if (upgrade_id == "buy_rifle"):
-		self.queue_free()
-	elif (upgrade_id == "buy_cannon"):
-		self.queue_free()
+		
+func remove():
+	self.queue_free()
