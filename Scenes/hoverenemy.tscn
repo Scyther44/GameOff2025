@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8a744b18msj8"]
+
+[ext_resource type="Script" uid="uid://bimx8vlgr8hxj" path="res://Scenes/hoverenemy.gd" id="1_oicwd"]
+[ext_resource type="Texture2D" uid="uid://c0xsuotltcmiy" path="res://Assets/flyingenemyb1.png" id="2_oicwd"]
+[ext_resource type="Texture2D" uid="uid://d1l5cto3rjoab" path="res://Assets/flyingenemyb2.png" id="3_6nsex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oicwd"]
+size = Vector2(44.9999, 32.9999)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3h4qw"]
+radius = 21.0238
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e4x8r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oicwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6nsex")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3h4qw"]
+radius = 4.0
+height = 120.411
+
+[node name="HoverEnemy" type="CharacterBody2D" groups=["mobs"]]
+script = ExtResource("1_oicwd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["mobs"]]
+position = Vector2(0.499933, 13.5)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_oicwd")
+
+[node name="Head" type="Area2D" parent="." groups=["head"]]
+position = Vector2(-38, -46)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+position = Vector2(14, 8)
+shape = SubResource("CircleShape2D_3h4qw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_e4x8r")
+autoplay = "default"
+frame = 1
+frame_progress = 0.265393
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-20, 1)
+rotation = -0.0922206
+shape = SubResource("CapsuleShape2D_3h4qw")

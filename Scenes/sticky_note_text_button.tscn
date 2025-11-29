@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://mmp6un3attx8"]
+
+[ext_resource type="Script" uid="uid://bqjbb4evird4n" path="res://Scripts/sticky_note_text_button.gd" id="1_ylkc7"]
+[ext_resource type="Texture2D" uid="uid://cj800rwrkm6w0" path="res://Assets/stickynoteblank.png" id="2_ylkc7"]
+[ext_resource type="LabelSettings" uid="uid://yur1kbpcwdss" path="res://Resources/shop_ui.tres" id="3_yjaox"]
+[ext_resource type="Texture2D" uid="uid://bqwauiyeo7ona" path="res://Assets/redsmiley.png" id="4_yjaox"]
+[ext_resource type="Texture2D" uid="uid://q43bdxudxwhq" path="res://Assets/cursor.png" id="5_iawiw"]
+
+[node name="StickyNoteTextButton" type="Button"]
+custom_minimum_size = Vector2(270, 270)
+anchors_preset = -1
+anchor_right = 0.211
+anchor_bottom = 0.375
+offset_right = -1.07999
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ylkc7")
+note_text = "Click Me!"
+
+[node name="BlankSticky" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(270, 270)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75, 0.75)
+pivot_offset = Vector2(180, 180)
+texture = ExtResource("2_ylkc7")
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.5
+offset_top = -84.0
+offset_right = 135.5
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Click Me!"
+label_settings = ExtResource("3_yjaox")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -64.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("4_yjaox")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -182.5
+offset_top = -114.0
+offset_right = -78.5
+offset_bottom = -11.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("5_iawiw")

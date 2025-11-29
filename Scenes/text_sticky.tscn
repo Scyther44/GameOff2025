@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgfr5s84eowjd"]
+
+[ext_resource type="Texture2D" uid="uid://o147rq45nm0b" path="res://Assets/stickynote.png" id="1_42j2u"]
+
+[node name="TextSticky" type="TextureRect"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -360.0
+offset_right = 360.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(360, 360)
+texture = ExtResource("1_42j2u")

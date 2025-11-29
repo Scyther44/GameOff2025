@@ -6,6 +6,10 @@ class_name Bullet extends Area2D
 var is_headshot = false
 func _physics_process(delta):
 	position += transform.x * speed * delta
+	if position.x > 1300: #if bullet leaves the screen delete it to prevent killing off screen
+		print("bullet_deleted")
+		self.queue_free()
+
 	
 func _on_body_entered(body: Node2D) -> void:
 	print("hello " + body.name)

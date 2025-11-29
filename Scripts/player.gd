@@ -32,6 +32,7 @@ var equipped_weapon = Weapons.BOW
 var top_sprite = Sprite2D
 var top_sprite_bow_image = preload("res://Assets/playertopbownew.png")
 var top_sprite_rifle_image = preload("res://Assets/playertoprifle.png")
+var top_sprite_cannon_image = preload("res://Assets/playertopcannon.png")
 func _ready() -> void:
 	shoot_timer.wait_time = bow_fire_rate
 	top_sprite = $Sprite2D
@@ -76,6 +77,7 @@ func _input(event: InputEvent) -> void:
 			shoot_timer.wait_time = cannon_fire_rate
 			bullet_scene = preload("res://Scenes/cannonball.tscn")
 			equipped_weapon = Weapons.CANNON
+			top_sprite.texture = top_sprite_cannon_image
 	elif event.is_action("weaponkey2"):
 		if rifle_unlocked:
 			emit_signal("weapon_changed", 1)

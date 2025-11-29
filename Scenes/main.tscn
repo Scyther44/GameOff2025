@@ -1,15 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://coe375fgbbdm1"]
+[gd_scene load_steps=17 format=3 uid="uid://coe375fgbbdm1"]
 
 [ext_resource type="PackedScene" uid="uid://b2j64sxhtbr0o" path="res://Scenes/player.tscn" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://br2prn2myb2ve" path="res://Scripts/main.gd" id="1_7mycd"]
 [ext_resource type="PackedScene" uid="uid://cwr1tyd1ynani" path="res://Scenes/flyingenemy.tscn" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://b7hbqoh11ly4f" path="res://Scenes/enemy.tscn" id="3_7mycd"]
 [ext_resource type="PackedScene" uid="uid://cvjh4bmixj83h" path="res://Scenes/arrow.tscn" id="4_5vw27"]
+[ext_resource type="PackedScene" uid="uid://c8a744b18msj8" path="res://Scenes/hoverenemy.tscn" id="4_6iyac"]
 [ext_resource type="PackedScene" uid="uid://dvyxq1po3xpsw" path="res://Scenes/shop_ui.tscn" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://bcmvqtpfeo5uy" path="res://Assets/base.png" id="6_5vw27"]
 [ext_resource type="Texture2D" uid="uid://xgef78td2eie" path="res://Assets/paperbg.jpg" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://cw5clvgs6ppgo" path="res://Scenes/mainmenu.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://bv5ostsgpoe5i" path="res://Scenes/hud.tscn" id="9_kek77"]
+[ext_resource type="AudioStream" uid="uid://10xp16rihkm7" path="res://Assets/sticktail.wav" id="11_d1ilt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tlwt5"]
 size = Vector2(2547, 135)
@@ -27,9 +29,11 @@ size = Vector2(2874, 59)
 script = ExtResource("1_7mycd")
 enemy_scene = ExtResource("3_7mycd")
 flying_enemy_scene = ExtResource("3_4c57u")
+jetpack_enemy_scene = ExtResource("4_6iyac")
 player = NodePath("Player")
 enemy_container = NodePath("Spawner")
 flying_enemy_container = NodePath("FlyingSpawner")
+jetpack_enemy_container = NodePath("JetpackSpawner")
 shop = NodePath("ShopUI")
 hud = NodePath("CanvasLayer/HUD")
 
@@ -50,6 +54,14 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
 texture = ExtResource("6_272bh")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+offset_left = -73.0
+offset_top = 210.0
+offset_right = 287.0
+offset_bottom = 593.0
+texture = ExtResource("6_5vw27")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -77,13 +89,6 @@ collision_layer = 2
 position = Vector2(-36, -264)
 shape = SubResource("RectangleShape2D_kek77")
 
-[node name="TextureRect" type="TextureRect" parent="DmgZone"]
-offset_left = -266.0
-offset_top = -354.0
-offset_right = 94.0
-offset_bottom = 29.0
-texture = ExtResource("6_5vw27")
-
 [node name="Roof" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
@@ -91,16 +96,27 @@ position = Vector2(1113, -19.5)
 shape = SubResource("RectangleShape2D_036b0")
 
 [node name="Spawner" type="Node2D" parent="."]
-position = Vector2(1148, 517)
+position = Vector2(1647, 517)
 
 [node name="FlyingSpawner" type="Node2D" parent="."]
-position = Vector2(1148, 124)
+position = Vector2(1647, 124)
+
+[node name="JetpackSpawner" type="Node2D" parent="."]
+position = Vector2(1647, 284)
 
 [node name="ShopUI" parent="." instance=ExtResource("5_lquwl")]
 texture_filter = 1
 
 [node name="Mainmenu" parent="." instance=ExtResource("8_5vw27")]
 z_index = 2
+
+[node name="WaveMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_d1ilt")
+volume_db = -10.0
+
+[node name="ShopMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_d1ilt")
+volume_db = -10.0
 
 [connection signal="shop_phase" from="." to="Player" method="_on_main_shop_phase"]
 [connection signal="shop_phase" from="." to="ShopUI" method="_on_main_shop_phase"]

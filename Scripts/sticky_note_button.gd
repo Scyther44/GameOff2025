@@ -3,6 +3,7 @@ extends Button
 @export var item_name: String
 @export var price: int
 @export var upgrade_id: String
+@export var item_icon: Texture
 
 signal item_purchased(upgrade_id: String, cost: int)
 
@@ -12,6 +13,7 @@ func _ready():
 	text = "" # we use labels for visuals
 	$ItemName.text = item_name
 	$Price.text = "$" + str(price)
+	$TextureRect.texture = item_icon
 	connect("pressed", Callable(self, "_on_pressed"))
 
 func _on_pressed():

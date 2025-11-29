@@ -5,6 +5,12 @@ signal shop_closed
 @export var player_money := 0
 @onready var grid := $VBoxContainer/GridContainer
 @onready var money_label := $VBoxContainer/MoneyLabel
+var buycannonicon = preload("res://Assets/buycannonicon.png")
+var buyrilfeicon = preload("res://Assets/buyrifleicon.png")
+var upgradecannonicon = preload("res://Assets/upgradecannonicon.png")
+var upgraderifleicon = preload("res://Assets/upgraderifleicon.png")
+var upgradebowicon = preload("res://Assets/upgradebowicon.png")
+
 signal upgrade_purchased
 signal money_changed
 var rifle_purchased = false
@@ -19,47 +25,38 @@ var cannon_damage_purchased_count = 0
 var cannon_punchthrough_purchased_count = 0
 var items = []
 var all_shop_items = [
-	{"name": "Bow Multishot", "price": 100, "id": "bow_multishot"},
-	{"name": "Bow Fire Rate", "price": 25, "id": "bow_fire_rate"},
-	{"name": "Bow Damage", "price": 50, "id": "bow_damage"},
-	{"name": "Buy Rifle", "price": 200, "id": "buy_rifle"},
-	{"name": "Rifle Fire Rate", "price": 25, "id": "rifle_fire_rate"},
-	{"name": "Rifle Damage", "price": 50, "id": "rifle_damage"},
-	{"name": "Buy Cannon", "price": 300, "id": "buy_cannon"},
-	{"name": "Cannon Multishot", "price": 25, "id": "cannon_multishot"},
-	{"name": "Cannon Fire Rate", "price": 40, "id": "cannon_fire_rate"},
-	{"name": "Cannon Damage", "price": 50, "id": "cannon_damage"},
+	{"name": "Bow Multishot", "price": 100, "id": "bow_multishot", "item_icon" : upgradebowicon},
+	{"name": "Bow Fire Rate", "price": 25, "id": "bow_fire_rate", "item_icon" : upgradebowicon},
+	{"name": "Bow Damage", "price": 50, "id": "bow_damage", "item_icon" : upgradebowicon},
+	{"name": "Buy Rifle", "price": 200, "id": "buy_rifle", "item_icon" : buyrilfeicon},
+	{"name": "Rifle Fire Rate", "price": 25, "id": "rifle_fire_rate", "item_icon" : upgraderifleicon},
+	{"name": "Rifle Damage", "price": 50, "id": "rifle_damage", "item_icon" : upgraderifleicon},
+	{"name": "Buy Cannon", "price": 300, "id": "buy_cannon", "item_icon" : buycannonicon},
+	{"name": "Cannon Multishot", "price": 25, "id": "cannon_multishot", "item_icon" : upgradecannonicon},
+	{"name": "Cannon Fire Rate", "price": 40, "id": "cannon_fire_rate", "item_icon" : upgradecannonicon},
+	{"name": "Cannon Damage", "price": 50, "id": "cannon_damage", "item_icon" : upgradecannonicon},
 ]
 
 var presses = 0
 
 func _ready() -> void:
 	update_money()
+	$StickyNoteTextButton.connect("pressed", Callable(self, "_on_button_pressed"))
 
 func _process(_delta: float) -> void:
 	$VBoxContainer/Shop.text = "Wave " + str(night_num + 1)
 	$VBoxContainer/MoneyLabel.text = "Current Money = $" + str(player_money)
 
 func _on_button_pressed() -> void:
-	presses += 1
-	match presses:
-		1:
-			#tutorial 1
-			$TextSticky.texture = preload("res://Assets/stickynote2.png")
-		2:
-			#tutorial 2
-			$TextSticky.texture = preload("res://Assets/stickynote3.png")
-		_:
-			$TextSticky.visible = false
-			$Button.disabled = true
-			var tween = get_tree().create_tween()
-			tween.tween_property(self, "modulate:a", 0.0, 3)
-			await tween.finished
-			emit_signal("shop_closed")
-			$Button.disabled = false
-			$VBoxContainer.visible = true
-			$VBoxContainer.process_mode = Node.PROCESS_MODE_DISABLED
-			update_grid()
+	$StickyNoteTextButton.disabled = true
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 0.0, 3)
+	await tween.finished
+	emit_signal("shop_closed")
+	$StickyNoteTextButton.disabled = false
+	$VBoxContainer.visible = true
+	$VBoxContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	update_grid()
 		
 func populate_shop_items(items: Array) -> void:
 	for child in $VBoxContainer/GridContainer.get_children():
@@ -69,19 +66,20 @@ func populate_shop_items(items: Array) -> void:
 		sticky.item_name = item.name
 		sticky.price = item.price
 		sticky.upgrade_id = item.id
+		sticky.item_icon = item.item_icon
 		sticky.connect("item_purchased", Callable(self, "_on_item_purchased"))
 		grid.add_child(sticky)
 
 
 func update_grid():		
-	items = [
-			all_shop_items[0],
-			all_shop_items[1], 
-			all_shop_items[2], 
-			all_shop_items[3], 
-			all_shop_items[4], 
-			all_shop_items[5], 
-			]
+	var items: Array = []
+
+	for i in range(6):	# max 6 slots
+		if i < all_shop_items.size():
+			items.append(all_shop_items[i])
+		else:
+			break	# no more items available
+	
 	populate_shop_items(items)
 
 func _on_item_purchased(upgrade_id: String, cost: int):
