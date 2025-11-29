@@ -3,6 +3,7 @@ var presses = 0
 
 func _ready() -> void:
 	$StickyNoteTextButton.connect("pressed", Callable(self, "_next_button_pressed"))
+	$Highscore.text = "Most Waves Survived: %d" % Savemanager.high_score
 	
 func _on_button_pressed() -> void:
 	$Button.visible = false
